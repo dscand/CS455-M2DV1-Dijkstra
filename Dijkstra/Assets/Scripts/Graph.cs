@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,7 +8,15 @@ public class Graph : MonoBehaviour
 	[HideInInspector]
 	public Dijkstra.Graph graph;
 
-	public Connection[] connections;
+	[Serializable]
+	public struct GraphConnection {
+		public GameObject node1;
+		public GameObject node2;
+	};
+	public GraphConnection[] connections;
+
+	[HideInInspector]
+	public List<GameObject> allNodes;
 
 	public Material defaultMaterial;
 	public Material startMaterial;
@@ -15,8 +24,8 @@ public class Graph : MonoBehaviour
 	public Material pathMaterial;
 
 	public void SetNodes(GameObject startNode, GameObject goalNode) {
-		foreach (Connection connection in connections) {
-			connection.GetComponent<MeshRenderer>().material = defaultMaterial;
+		foreach (GameObject node in allNodes) {
+			node.GetComponent<MeshRenderer>().material = defaultMaterial;
 		}
 
 		startNode.GetComponent<MeshRenderer>().material = startMaterial;

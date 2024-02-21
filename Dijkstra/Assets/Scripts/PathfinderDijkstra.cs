@@ -37,9 +37,9 @@ public class PathfinderDijkstra : Arriver
 	}
 
 
-	GameObject GetRandomNode(GameObject current, Connection[] connections)
+	GameObject GetRandomNode(GameObject current, List<GameObject> allNodes)
 	{
-		List<GameObject> nodes = (from connection in connections select connection.gameObject).ToList();
+		List<GameObject> nodes = new(allNodes);
 		nodes.Remove(current);
 		return nodes[Random.Range(0,nodes.Count)];
 	}
@@ -52,16 +52,24 @@ public class PathfinderDijkstra : Arriver
 		graph.SetNodes(startNode, goalNode);
 		
 		
+		graph.allNodes = new List<GameObject>();
 		List<Dijkstra.Connection> connections = new();
 
-		foreach (Connection connection in graph.connections) {
-			foreach (GameObject node in connection.outgoingNodes) {
-				connections.Add(new Dijkstra.Connection() {
-					cost = connection.cost,
-					fromNode = connection.gameObject,
-					toNode = node,
-				});
-			}
+		foreach (Graph.GraphConnection connection in graph.connections) {
+			connections.Add(new Dijkstra.Connection() {
+				cost = Vector3.Distance(connection.node1.transform.position, connection.node2.transform.position),
+				fromNode = connection.node1,
+				toNode = connection.node2,
+			});
+			
+			connections.Add(new Dijkstra.Connection() {
+				cost = Vector3.Distance(connection.node1.transform.position, connection.node2.transform.position),
+				fromNode = connection.node2,
+				toNode = connection.node1,
+			});
+
+			if (!graph.allNodes.Contains(connection.node1)) graph.allNodes.Add(connection.node1);
+			if (!graph.allNodes.Contains(connection.node2)) graph.allNodes.Add(connection.node2);
 		}
 
 		graph.graph = new() {
@@ -82,6 +90,6 @@ public class PathfinderDijkstra : Arriver
 	}
 	void SetNewPath(GameObject startNode)
 	{
-		SetNewPath(startNode, GetRandomNode(startNode, graph.connections));
+		SetNewPath(startNode, GetRandomNode(startNode, graph.allNodes));
 	}
 }
