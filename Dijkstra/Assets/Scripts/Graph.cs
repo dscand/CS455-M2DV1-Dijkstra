@@ -37,4 +37,14 @@ public class Graph : MonoBehaviour
 			path[i].toNode.GetComponent<MeshRenderer>().material = pathMaterial;
 		}
 	}
+
+	void OnDrawGizmosSelected()
+	{
+		foreach (GraphConnection connect in connections)
+		{
+			// Draws a blue line from this transform to the target
+			Gizmos.color = Color.blue;
+			Gizmos.DrawLine(connect.node1.transform.position, connect.node2.transform.position);
+		}
+	}
 }

@@ -78,13 +78,13 @@ public class Dijkstra
 			//return this[0];
 		}
 
-		public NodeRecord smallestElement()
+		public NodeRecord SmallestElement()
 		{
 			NodeRecord selected = this[0];
 			//if (Count == 1) return selected;
 
 			for (int i = 1; i < Count; i++) {
-				if (selected.costSoFar < this[i].costSoFar) selected = this[i];
+				if (this[i].costSoFar < selected.costSoFar) selected = this[i];
 			}
 			return selected;
 		}
@@ -107,7 +107,7 @@ public class Dijkstra
 		// Iterate through processing each node.
 		while (open.Count > 0) {
 			// Find the smallest element in the open list.
-			current = open.smallestElement();
+			current = open.SmallestElement();
 
 			// If it is the goal node, then terminate.
 			if (current.node == goal) break;

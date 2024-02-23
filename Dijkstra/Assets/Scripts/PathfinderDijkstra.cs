@@ -57,13 +57,13 @@ public class PathfinderDijkstra : Arriver
 
 		foreach (Graph.GraphConnection connection in graph.connections) {
 			connections.Add(new Dijkstra.Connection() {
-				cost = Vector3.Distance(connection.node1.transform.position, connection.node2.transform.position),
+				cost = connection.node2.GetComponent<CostNode>().cost,
 				fromNode = connection.node1,
 				toNode = connection.node2,
 			});
 			
 			connections.Add(new Dijkstra.Connection() {
-				cost = Vector3.Distance(connection.node1.transform.position, connection.node2.transform.position),
+				cost = connection.node1.GetComponent<CostNode>().cost,
 				fromNode = connection.node2,
 				toNode = connection.node1,
 			});
